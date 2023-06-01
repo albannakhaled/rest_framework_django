@@ -8,6 +8,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.authentication import BasicAuthentication , TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from rest_framework import mixins
+from rest_framework import generics
+
 
 #1 without rest framework without model
 
@@ -20,6 +23,7 @@ def no_rest_no_model(request):
         }
     ]
     return JsonResponse(guests , safe=False)
+    
 
 #------------------------------------------
 
@@ -55,7 +59,7 @@ def FBV_List(request):
         else:
             return Response(serializer.errors, status=400)
 
-    # PUT
+    # PUT with pk
     elif request.method == "PUT":
         try:
             guest = Guest.objects.get(pk=request.data["id"])
@@ -105,7 +109,7 @@ class CBV_List(APIView):
 #------------------------------------------
 
 
-# 5 class based view pk
+# 5 class based view with pk
 class CBV_PK(APIView):
     def get_object(self , pk):
         try:
@@ -131,6 +135,42 @@ class CBV_PK(APIView):
         return Response(status=204)
     
 
+# mixin
+class GuestList(mixins.ListModelMixin,mixins.CreateModelMixin,generics.GenericAPIView):
+    queryset = Guest.objects.all()
+    serializer_class = GuestSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+    
+# mixin with pk
+class MixinDetail(mixins.RetrieveModelMixin,
+                    mixins.UpdateModelMixin,
+                    mixins.DestroyModelMixin,
+                    generics.GenericAPIView):
+    queryset = Guest.objects.all()
+    serializer_class = GuestSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
             
 
-            
+# generic class based view
+
+class Generic_list(generics.ListCreateAPIView):
+    queryset = Guest.objects.all()
+    serializer_class = GuestSerializer
+
+
+class Generic_details(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Guest.objects.all()
+    serializer_class = GuestSerializer
