@@ -1,5 +1,7 @@
 from django.db import models
 
+
+
 # Create your models here.
 
 
@@ -20,4 +22,3 @@ class Guest(models.Model):
 class Reservation(models.Model):
     guest = models.ForeignKey(Guest, on_delete=models.CASCADE , related_name='reservation')
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE , related_name='reservation')
-    

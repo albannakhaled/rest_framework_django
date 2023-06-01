@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import path , include
 from ticket import views
 
+
 urlpatterns = [
     path('wayOne/',views.no_rest_no_model,name='jsonresponse'),#api without rest frame work without model
     path('wayTwo/',views.no_rest_with_model,name=''),# with model without rest 
@@ -12,4 +13,7 @@ urlpatterns = [
     path('waySeven/<int:pk>', views.MixinDetail.as_view(), name='mymodel-detail'),#mixin with pk
     path('wayEight/', views.Generic_list.as_view(), name='mymodel-detail'),# generic
     path('wayNine/<int:pk>/', views.Generic_details.as_view(), name='mymodel-detail'),# generic with pk
+
+    # token authentication
+    # path('api-token/',views.obtain_auth_token)
 ]
