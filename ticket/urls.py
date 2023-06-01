@@ -1,10 +1,11 @@
 from django.contrib import admin
 from django.urls import path , include
 from ticket import views
+from rest_framework.authtoken.views import obtain_auth_token
 
 
 urlpatterns = [
-    path('wayOne/',views.no_rest_no_model,name='jsonresponse'),#api without rest frame work without model
+    #path('wayOne/',views.no_rest_no_model,name='jsonresponse'),#api without rest frame work without model
     path('wayTwo/',views.no_rest_with_model,name=''),# with model without rest 
     path('wayThree/',views.FBV_List,name=''),#function based view (put , post)
     path('wayFour/',views.CBV_List.as_view(),name=''),#class based view
@@ -16,4 +17,5 @@ urlpatterns = [
 
     # token authentication
     # path('api-token/',views.obtain_auth_token)
+    path('api-token-auth/', obtain_auth_token)
 ]

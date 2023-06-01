@@ -164,13 +164,16 @@ class MixinDetail(mixins.RetrieveModelMixin,
         return self.destroy(request, *args, **kwargs)
             
 
-# generic class based view
+# 8 generic class based view
 
 class Generic_list(generics.ListCreateAPIView):
     queryset = Guest.objects.all()
     serializer_class = GuestSerializer
+    authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
 
 
 class Generic_details(generics.RetrieveUpdateDestroyAPIView):
     queryset = Guest.objects.all()
     serializer_class = GuestSerializer
+    authentication_classes = [TokenAuthentication]
