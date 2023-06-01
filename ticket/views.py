@@ -24,12 +24,14 @@ def no_rest_no_model(request):
 #------------------------------------------
 
 #2 without rest with model
+
 def no_rest_with_model(request):
-    data = Guest.objects.all()
+    data = Guest.objects.all().values('name', 'phone')
     response = {
-        'guest':data.value('name','phone')
+        'guest': list(data)
     }
     return JsonResponse(response)
+
 
 #------------------------------------------
 
